@@ -1,22 +1,114 @@
-<!-- index.html -->
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html> <!-- HTML5 文档声明 -->
+<html lang="zh-CN"> <!-- 设置网页语言为简体中文 -->
 <head>
-  <meta charset="UTF-8">
-  <title>Life Clock - 一天看一生</title>
-  <style>
-    body {
-      font-family: "Helvetica Neue", sans-serif;
-      background-color: #f0f2f5;
-      color: #333;
-      text-align: center;
-      padding: 100px;
-    }
-  </style>
+    <meta charset="UTF-8"> <!-- 使用 UTF-8 编码，支持中文 -->
+    <title>Life Clock</title> <!-- 网页标题，显示在浏览器标签上 -->
+
+    <!-- 引入 Flatpickr 日期选择器的样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- 引入 Flatpickr 主脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- 引入 Flatpickr 的中文本地化包 -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+
+    <!-- 页面样式部分 -->
+    <style>
+        body {
+            font-family: "Helvetica Neue", sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            text-align: center;
+            padding: 110px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        input, button {
+            padding: 12px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            width: 250px;
+        }
+
+        .info {
+            color: gray;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        /* 说明文字行 */
+        .line-top {
+            font-size: 1.4em;
+            margin-bottom: 16px; /* 与时间框之间间距 */
+        }
+
+        /* 时间显示框样式 */
+        .clock-box {
+            display: inline-block;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 8px 16px;
+            margin-bottom: 16px; /* 与底部提示文字间距 */
+            font-weight: bold;
+            font-size: 1.6em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        /* 提示文字行（如“黎明时分...”） */
+        .line-bottom {
+            font-size: 1.1em;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-  <h1>👋 欢迎来到 Life Clock</h1>
-  <p>如果你的人生是 24 小时，你现在正处在几点几分？</p>
-  <p>项目部署成功，后续功能即将上线...</p>
+    <div class="container">
+        <h1>Life Clock</h1>
+        <p class="info">注：根据国家卫健委公布，截至2022年中国人均寿命约为78.2岁</p>
+
+        <!-- 出生日期输入表单 -->
+        <form method="post">
+            <label>请输入你的出生日期：</label><br>
+            <input type="text" id="dateInput" name="birthdate" required value="{{ birthdate if birthdate else '' }}"><br>
+            <button type="submit">查看我的时钟</button>
+        </form>
+
+        {% if time_result %}
+        <!-- 三行分离显示 -->
+        <div class="result">
+            <p class="line-top">假设人生是24小时，你现在的年龄是</p>
+            <div class="clock-box">{{ time_result }}</div>
+            <p class="line-bottom">{{ message }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- JS：Flatpickr 初始化与输入格式化 -->
+    <script>
+        flatpickr("#dateInput", {
+            dateFormat: "Y-m-d",
+            maxDate: "today",
+            locale: "zh",
+            allowInput: true
+        });
+
+        // 自动格式化输入 19990909 → 1999-09-09
+        document.getElementById("dateInput").addEventListener("input", function(e) {
+            let val = e.target.value;
+            if (/^\d{8}$/.test(val)) {
+                let year = val.slice(0, 4);
+                let month = val.slice(4, 6);
+                let day = val.slice(6, 8);
+                e.target.value = `${year}-${month}-${day}`;
+            }
+        });
+    </script>
 </body>
 </html>
