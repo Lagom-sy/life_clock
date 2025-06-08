@@ -1,0 +1,22 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Life Clock - 一天看一生</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      text-align: center;
+      padding: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>👋 欢迎来到 Life Clock</h1>
+  <p>如果你的人生是 24 小时，你现在正处在几点几分？</p>
+  <p>项目部署成功，后续功能即将上线...</p>
+</body>
+</html>
